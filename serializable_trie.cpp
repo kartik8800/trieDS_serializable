@@ -118,6 +118,8 @@ public:
    //Number of words in the trie the have a given prefix.
    int wordsWithThePrefix(string prefix, int calledBy = 1)
    {
+      if(root==NULL)
+              return 0;
       trieNode *currentNode = root;
       for(int i = 0; i < prefix.length(); i++)
       {
