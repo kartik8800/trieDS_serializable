@@ -58,6 +58,7 @@ public:
    //Used to construct a trie initialized with a list of words.
    TrieDS(vector<string> words)
    {
+       totalWords = 0;
        for(string word : words)
        {
        	  insertWord(word);
