@@ -10,7 +10,7 @@ a user can do the following:
 6. Convert the trie to a string i.e. serialize the trie.
 7. Create a trie using a string representing the trie.
 
-Note: Serialization of the trie to a string makes use of special characters '>' and ']'. The user is expected to not use these symbols in words that are to be inserted to the trie.
-test data taken from https://github.com/dwyl/english-words
+Note: Serialization of the trie to a string makes use of special characters '>' and ']'. The user is expected to not use these symbols in words that are to be inserted to the trie. <br>
+Test data taken from https://github.com/dwyl/english-words
 
 written in c++.
