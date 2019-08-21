@@ -81,6 +81,7 @@ private:
             wordSeen += stringToTrie(childMap[ch], serialTrie, read);
         }
         read++;
+        node->wordsWithPrefix = wordSeen;
         return wordSeen;
    }
 
@@ -107,11 +108,9 @@ public:
    //Used to construct a trie using an existing trie given in serial format.
    TrieDS(string serialTrie)
    {
-       totalWords = 0;
        root = new trieNode();
        int read = 0;
-       root->wordsWithPrefix =
-                   stringToTrie(root, serialTrie, read);
+       totalWords = stringToTrie(root, serialTrie, read);
    }
 
    //used to insert a word in the trie.
