@@ -11,5 +11,6 @@ a user can do the following:
 7. Create a trie using a string representing the trie.
 
 Note: Serialization of the trie to a string makes use of special characters '>' and ']'. The user is expected to not use these symbols in words that are to be inserted to the trie.
+test data taken from https://github.com/dwyl/english-words
 
 written in c++.
