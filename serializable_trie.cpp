@@ -46,12 +46,50 @@ private:
    	 }
    }
 
+   //helper function
+   void buildSerialTrie(trieNode *root, string &serialTrie)
+   {
+       if(root->isValidWord)
+          serialTrie.push_back(']');
+       unordered_map<char, trieNode*> &children = root->children;
+       for(auto child : children)
+       {
+           serialTrie.push_back(child.first);
+           buildSerialTrie(child.second, serialTrie);
+       }
+       serialTrie.push_back('>');
+   }
+
+   //helper function
+   int stringToTrie(trieNode *node, string &serialTrie, int &read)
+   {
+        int wordSeen = 0;
+        if(serialTrie[read] == ']')
+        {
+           node->isValidWord = 1;
+           wordSeen++;
+           read++;
+        }
+        else node->isValidWord = 0;
+
+
+        unordered_map<char, trieNode*> &childMap = node->children;
+        while(serialTrie[read] != '>')
+        {
+            char ch = serialTrie[read++];
+            childMap[ch] = new trieNode();
+            wordSeen += stringToTrie(childMap[ch], serialTrie, read);
+        }
+        read++;
+        return wordSeen;
+   }
+
 public:
 
    //used to construct an empty trie.
    TrieDS()
    {
-      root = NULL;
+      root = new trieNode();
       totalWords = 0;
    }
 
@@ -59,19 +97,26 @@ public:
    TrieDS(vector<string> words)
    {
        totalWords = 0;
+       root = new trieNode();
        for(string word : words)
        {
        	  insertWord(word);
        }
    }
 
+   //Used to construct a trie using an existing trie given in serial format.
+   TrieDS(string serialTrie)
+   {
+       totalWords = 0;
+       root = new trieNode();
+       int read = 0;
+       root->wordsWithPrefix =
+                   stringToTrie(root, serialTrie, read);
+   }
+
    //used to insert a word in the trie.
    void insertWord(string word)
    {
-      if(totalWords == 0)
-      {
-          root = new trieNode();
-      }
       trieNode *currentNode = root;
       for(int i = 0; i < word.length(); i++)
       {
@@ -100,7 +145,7 @@ public:
    }
 
    //Used to convert the trie to a list of words(serialization).
-   vector<string> serializeTrie()
+   vector<string> trieToList()
    {
    	  vector<string> trieToString;
    	  treeDepthTraversal(root, trieToString, "");
@@ -136,21 +181,37 @@ public:
       else return 0;
    }
 
+   string trieToString()
+   {
+       string serializedTrie;
+       buildSerialTrie(root, serializedTrie);
+       return serializedTrie;
+   }
+
 };
 
 int main()
- {
- 	vector<string> input;
- 	input.push_back("banana");
- 	input.push_back("apple");
- 	input.push_back("litchi");
- 	input.push_back("blueberry");
- 	input.push_back("apricot");
+{
+    /*
+     *THIS PROGRAM USES THE TEST DATA
+     *TO BUILD A TRIE FOR THE GIVEN DATA
+     *THEN IT CONVERTS THE TRIE INTO ITS
+     *SERIALIZED FORM AND WRITES IT TO A FILE
+     */
+    freopen ("TEST_DATA.txt", "r", stdin);
+    freopen ("SERIAL_FORM.txt", "w", stdout);
+
+    vector<string> input;
+ 	string word;
+
+ 	cin>>word;
+ 	while(word != "#END#")
+    {
+       input.push_back(word);
+       cin>>word;
+    }
+
  	TrieDS *myTrie = new TrieDS(input);
- 	vector<string> output = myTrie->serializeTrie();
- 	for(string s: output)
- 	          cout<<s<<endl;
-    cout<<myTrie->wordsWithThePrefix("ap")<<endl;
-    cout<<myTrie->findWord("apple")<<endl;
+ 	cout<<myTrie->trieToString();
  	return 0;
- }
+}
