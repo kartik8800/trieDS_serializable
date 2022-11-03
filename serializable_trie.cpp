@@ -179,6 +179,24 @@ public:
            return currentNode->wordsWithPrefix;
       else return 0;
    }
+    
+    //this function will return a list of all the words matching the 
+   vector<string> allWordsWithPrefix(string prefix)
+   {
+      vector<string> result;
+      trieNode *currentNode = root;
+      for (int i = 0; i < prefix.length(); i++)
+      {
+         unordered_map<char, trieNode *> &childMap = (currentNode->children);
+         auto it = childMap.find(prefix[i]);
+         if (it == childMap.end())
+            return result;
+         else
+            currentNode = childMap[prefix[i]];
+      }
+      treeDepthTraversal(currentNode, result, prefix);
+      return result;
+   }
 
    string trieToString()
    {
